@@ -1,0 +1,321 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+<meta charset="UTF-8"><meta name="viewport" content="width=device-width,initial-scale=1.0">
+<meta name="description" content="Listas de contatos B2B por nicho e região, coletados via Google Maps para prospecção direta.">
+<title>Prelu.Leads — Listas B2B Segmentadas</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link href="https://fonts.googleapis.com/css2?family=Space+Grotesk:wght@300;400;500;600;700&display=swap" rel="stylesheet">
+<style>
+*,*::before,*::after{box-sizing:border-box;margin:0;padding:0}
+:root{--pp:#7C3AED;--bg:#0A0A0A;--bg2:#111;--bg3:#161616;--txt:#F5F5F5;--muted:#6B7280;--border:rgba(255,255,255,.08)}
+html{scroll-behavior:smooth}body{font-family:'Space Grotesk',sans-serif;background:var(--bg);color:var(--txt);overflow-x:hidden;line-height:1.6}
+a{text-decoration:none;color:inherit}img{max-width:100%;display:block}
+.nav{position:fixed;top:0;left:0;right:0;z-index:100;height:64px;display:flex;align-items:center;
+justify-content:space-between;padding:0 clamp(20px,5vw,64px);
+background:rgba(10,10,10,.93);backdrop-filter:blur(20px);border-bottom:1px solid var(--border);gap:12px}
+.logo{font-size:22px;font-weight:700;letter-spacing:-.5px}.logo span{color:var(--pp)}
+.nav-links{display:flex;gap:4px}
+.nav-links a{padding:7px 13px;font-size:13px;font-weight:500;color:var(--muted);border-radius:7px;transition:all .18s}
+.nav-links a:hover{color:var(--txt);background:rgba(255,255,255,.06)}
+.nav-links a.active{color:var(--txt);background:rgba(124,58,237,.2);border:1px solid rgba(124,58,237,.35)}
+.nav-cta{display:flex;align-items:center;gap:7px;padding:9px 18px;border-radius:8px;background:#25D366;
+color:#fff;font-size:13px;font-weight:600;transition:all .2s;white-space:nowrap;text-decoration:none}
+.nav-cta:hover{background:#20bd5a;transform:translateY(-1px)}
+.burger{display:none;flex-direction:column;gap:5px;cursor:pointer;padding:5px;border:none;background:transparent}
+.burger span{display:block;width:22px;height:2px;background:var(--txt);border-radius:2px;transition:all .28s}
+.mob-nav{display:none;position:fixed;top:64px;left:0;right:0;z-index:99;
+background:rgba(10,10,10,.97);border-bottom:1px solid var(--border);
+backdrop-filter:blur(28px);flex-direction:column;padding:12px 20px 20px;gap:4px}
+.mob-nav.open{display:flex}
+.mob-nav a{padding:13px 16px;border-radius:8px;font-size:14px;font-weight:500;color:var(--muted);transition:all .18s}
+.mob-nav a:hover,.mob-nav a.active{color:var(--txt);background:rgba(255,255,255,.06)}
+.mob-cta{margin-top:8px!important;display:flex!important;align-items:center;justify-content:center;
+gap:8px;padding:15px!important;border-radius:10px!important;background:#25D366!important;
+color:#fff!important;font-weight:700!important}
+.pt{padding-top:64px}
+.sec{padding:88px clamp(20px,6vw,80px)}
+.inner{max-width:1200px;margin:0 auto}
+.lbl{font-size:11px;font-weight:700;letter-spacing:2.5px;text-transform:uppercase;color:var(--pp);margin-bottom:14px}
+.ttl{font-size:clamp(28px,3.5vw,52px);font-weight:700;letter-spacing:-1.5px;line-height:1.06;margin-bottom:16px}
+.hero{min-height:88vh;display:flex;align-items:center;padding:80px clamp(20px,6vw,80px) 60px;position:relative;overflow:hidden}
+.hero::before{content:'';position:absolute;top:-40%;right:-5%;width:700px;height:700px;border-radius:50%;
+background:radial-gradient(circle,rgba(124,58,237,.1) 0%,transparent 65%);pointer-events:none}
+.hero-inner{max-width:800px;position:relative;z-index:1}
+.hero-tag{display:inline-flex;align-items:center;gap:8px;padding:5px 14px;border-radius:100px;
+border:1px solid rgba(124,58,237,.3);background:rgba(124,58,237,.08);color:var(--pp);
+font-size:11px;font-weight:700;letter-spacing:1.5px;text-transform:uppercase;margin-bottom:28px}
+.hero-tag-dot{width:6px;height:6px;border-radius:50%;background:var(--pp);animation:pulse 2s infinite}
+@keyframes pulse{0%,100%{opacity:1}50%{opacity:.4}}
+.hero h1{font-size:clamp(44px,7vw,84px);font-weight:700;letter-spacing:-3px;line-height:.98;margin-bottom:28px}
+.hero h1 em{font-style:normal;color:var(--pp)}
+.hero p{font-size:17px;line-height:1.78;color:var(--muted);max-width:520px;margin-bottom:40px}
+.btn-p{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:10px;
+font-size:14px;font-weight:600;cursor:pointer;transition:all .22s;border:none;
+text-decoration:none;font-family:'Space Grotesk',sans-serif}
+.btn-p:hover{filter:brightness(1.1);transform:translateY(-2px)}
+.btn-s{display:inline-flex;align-items:center;gap:9px;padding:15px 28px;border-radius:10px;
+font-size:14px;font-weight:600;cursor:pointer;transition:all .22s;background:transparent;
+border:1px solid var(--border);text-decoration:none;font-family:'Space Grotesk',sans-serif;color:var(--txt)}
+.btn-s:hover{background:rgba(255,255,255,.06);transform:translateY(-2px)}
+.btn-row{display:flex;gap:12px;flex-wrap:wrap;align-items:center}
+.grid-3{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.grid-4{display:grid;grid-template-columns:repeat(4,1fr);gap:20px;margin-top:48px}
+.card{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:32px;transition:all .22s}
+.card:hover{border-color:rgba(124,58,237,.3);transform:translateY(-4px);box-shadow:0 16px 40px rgba(0,0,0,.3)}
+.card-ic{font-size:28px;margin-bottom:16px}.card-title{font-size:17px;font-weight:700;margin-bottom:8px;letter-spacing:-.3px}
+.card-desc{font-size:13px;line-height:1.7;color:var(--muted)}
+/* Data preview */
+.data-preview{margin-top:52px;background:var(--bg2);border:1px solid var(--border);border-radius:16px;overflow:hidden}
+.data-header{padding:14px 20px;background:var(--bg3);border-bottom:1px solid var(--border);display:flex;align-items:center;gap:10px}
+.data-dot{width:10px;height:10px;border-radius:50%}
+.data-title{font-size:12px;font-weight:600;color:var(--muted)}
+.data-table{width:100%;border-collapse:collapse}
+.data-table th{padding:12px 16px;text-align:left;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;color:var(--muted);border-bottom:1px solid var(--border)}
+.data-table td{padding:12px 16px;font-size:13px;border-bottom:1px solid rgba(255,255,255,.04)}
+.data-table tr:last-child td{border-bottom:none}
+.data-table tr:hover td{background:rgba(124,58,237,.04)}
+.data-badge{display:inline-block;padding:2px 8px;border-radius:4px;font-size:11px;font-weight:600;background:rgba(37,211,102,.1);color:#25D366}
+/* Testimonials */
+.testi-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;margin-top:48px}
+.testi{background:var(--bg2);border:1px solid var(--border);border-radius:16px;padding:28px}
+.testi-stars{color:#F59E0B;font-size:13px;margin-bottom:14px;letter-spacing:2px}
+.testi-text{font-size:14px;line-height:1.75;color:rgba(245,245,245,.85);margin-bottom:20px;font-style:italic;font-weight:300}
+.testi-author{display:flex;align-items:center;gap:10px}
+.testi-av{width:38px;height:38px;border-radius:50%;display:flex;align-items:center;justify-content:center;font-size:14px;font-weight:700;flex-shrink:0}
+.testi-name{font-size:14px;font-weight:600}
+.testi-role{font-size:12px;color:var(--muted)}
+.cta-band{padding:80px clamp(20px,6vw,80px);text-align:center;
+background:linear-gradient(135deg,#0D0521,#0A0A0A);border-top:1px solid rgba(124,58,237,.15)}
+.footer{padding:36px clamp(20px,6vw,80px);border-top:1px solid var(--border);
+display:flex;align-items:center;justify-content:space-between;flex-wrap:wrap;gap:16px}
+.f-logo{font-size:18px;font-weight:700;letter-spacing:-.4px}.f-logo span{color:var(--pp)}
+.f-links{display:flex;gap:22px;flex-wrap:wrap}
+.f-link{font-size:12px;color:var(--muted);transition:color .18s}
+.f-link:hover{color:var(--txt)}
+.wa-float{position:fixed;bottom:24px;right:24px;z-index:999;width:54px;height:54px;border-radius:50%;
+background:#25D366;display:flex;align-items:center;justify-content:center;
+box-shadow:0 4px 20px rgba(37,211,102,.4);transition:all .22s;text-decoration:none}
+.wa-float:hover{transform:scale(1.1)}
+.wa-float svg{width:27px;height:27px;fill:#fff}
+@keyframes fadeUp{from{opacity:0;transform:translateY(24px)}to{opacity:1;transform:translateY(0)}}
+.fu{animation:fadeUp .65s ease forwards}
+.d1{animation-delay:.1s;opacity:0}.d2{animation-delay:.22s;opacity:0}
+.d3{animation-delay:.36s;opacity:0}.d4{animation-delay:.5s;opacity:0}
+@media(max-width:900px){.nav-links,.nav-cta{display:none}.burger{display:flex}
+.grid-3,.grid-4,.testi-grid{grid-template-columns:1fr}
+.data-table{display:block;overflow-x:auto}}
+@media(max-width:600px){.hero h1{font-size:42px;letter-spacing:-2px}
+.btn-row{flex-direction:column;align-items:stretch}.btn-p,.btn-s{justify-content:center;width:100%}}
+</style>
+</head>
+<body>
+<header>
+<nav class="nav">
+<a href="/" class="logo">prelu<span>.</span></a>
+<div class="nav-links">
+  <a href="/">Início</a>
+  <a href="/sites/">Prelu.Sites</a>
+  <a href="/local/">Prelu.Local</a>
+  <a href="/leads/" class="active">Prelu.Leads</a>
+</div>
+<a href="https://wa.me/5511911778502?text=Ol%C3%A1%2C+vim+pelo+site+da+Prelu!" target="_blank" class="nav-cta"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Pedir Meu Site</a>
+<button class="burger" id="burger"><span></span><span></span><span></span></button>
+</nav>
+<div class="mob-nav" id="mobNav">
+  <a href="/">Início</a>
+  <a href="/sites/">Prelu.Sites</a>
+  <a href="/local/">Prelu.Local</a>
+  <a href="/leads/" class="active">Prelu.Leads</a>
+  <a href="https://wa.me/5511911778502?text=Ol%C3%A1%2C+vim+pelo+site+da+Prelu!" target="_blank" class="mob-cta"><svg width="15" height="15" viewBox="0 0 24 24" fill="currentColor"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg> Pedir Meu Site</a>
+</div>
+</header>
+
+<div class="pt">
+<!-- HERO -->
+<section class="hero">
+  <div class="hero-inner">
+    <div class="hero-tag fu d1"><span class="hero-tag-dot"></span>Prelu.Leads · Prospecção B2B</div>
+    <h1 class="fu d2">Contatos B2B<br/>prontos para<br/><em>prospectar</em></h1>
+    <p class="fu d3">Listas segmentadas por nicho e região, coletadas via Google Maps com dados reais e atualizados. Entrega em 24h.</p>
+    <div class="btn-row fu d4">
+      <a href="https://wa.me/5511911778502?text=Ol%C3%A1%2C+quero+uma+lista+de+leads!" target="_blank" class="btn-p" style="background:var(--pp);color:#fff">Quero uma lista agora →</a>
+      <a href="https://wa.me/5511911778502?text=Quero+uma+amostra+gr%C3%A1tis+da+Prelu.Leads!" target="_blank" class="btn-s">Pedir amostra grátis</a>
+    </div>
+  </div>
+</section>
+
+<!-- DATA PREVIEW -->
+<section class="sec" style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="inner">
+    <div class="lbl">Exemplo de dados</div>
+    <h2 class="ttl">O que você recebe</h2>
+    <p style="color:var(--muted);font-size:15px;max-width:500px">Cada contato com todas as informações necessárias para prospectar com confiança.</p>
+    <div class="data-preview">
+      <div class="data-header">
+        <div class="data-dot" style="background:#FF5F57"></div>
+        <div class="data-dot" style="background:#FEBC2E"></div>
+        <div class="data-dot" style="background:#28C840"></div>
+        <div class="data-title" style="margin-left:8px">leads_academias_sao_paulo.xlsx · 500 contatos</div>
+      </div>
+      <div style="overflow-x:auto">
+        <table class="data-table">
+          <thead>
+            <tr>
+              <th>Empresa</th>
+              <th>Segmento</th>
+              <th>Cidade</th>
+              <th>Telefone</th>
+              <th>WhatsApp</th>
+              <th>Google</th>
+              <th>Status</th>
+            </tr>
+          </thead>
+          <tbody>
+            <tr>
+              <td>Academia FitPlus</td>
+              <td>Fitness</td>
+              <td>São Paulo - SP</td>
+              <td>(11) 9 8742-3310</td>
+              <td>✓</td>
+              <td>⭐ 4.8</td>
+              <td><span class="data-badge">Verificado</span></td>
+            </tr>
+            <tr>
+              <td>Studio Move</td>
+              <td>Pilates</td>
+              <td>Campinas - SP</td>
+              <td>(19) 9 9512-7788</td>
+              <td>✓</td>
+              <td>⭐ 4.7</td>
+              <td><span class="data-badge">Verificado</span></td>
+            </tr>
+            <tr>
+              <td>CrossFit Zona Sul</td>
+              <td>CrossFit</td>
+              <td>São Paulo - SP</td>
+              <td>(11) 9 7623-4420</td>
+              <td>✓</td>
+              <td>⭐ 4.9</td>
+              <td><span class="data-badge">Verificado</span></td>
+            </tr>
+            <tr>
+              <td>Espaço Bem-Estar</td>
+              <td>Yoga</td>
+              <td>Santo André - SP</td>
+              <td>(11) 9 8834-5577</td>
+              <td>✓</td>
+              <td>⭐ 4.6</td>
+              <td><span class="data-badge">Verificado</span></td>
+            </tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- COMO FUNCIONA -->
+<section class="sec">
+  <div class="inner">
+    <div class="lbl">Como funciona</div>
+    <h2 class="ttl">Dados que geram resultados</h2>
+    <div class="grid-3">
+      <div class="card"><div class="card-ic">🗺️</div><div class="card-title">Coleta via Google Maps</div><div class="card-desc">Extraímos dados de empresas diretamente do Google Maps — informações atualizadas e verificadas.</div></div>
+      <div class="card"><div class="card-ic">🎯</div><div class="card-title">Segmentação por Nicho</div><div class="card-desc">Filtramos por segmento, cidade e bairro. Você recebe exatamente o público que quer atingir.</div></div>
+      <div class="card"><div class="card-ic">📱</div><div class="card-title">Dados Completos</div><div class="card-desc">Nome, telefone, WhatsApp, endereço, site, avaliação no Google e categoria do negócio.</div></div>
+      <div class="card"><div class="card-ic">📊</div><div class="card-title">Formato Pronto</div><div class="card-desc">Entregamos em Excel ou CSV, pronto para importar em qualquer CRM ou ferramenta de disparo.</div></div>
+      <div class="card"><div class="card-ic">⚡</div><div class="card-title">Entrega em 24h</div><div class="card-desc">Listas de até 500 contatos entregues em 24h. Volumes maiores combinados sob demanda.</div></div>
+      <div class="card"><div class="card-ic">🔄</div><div class="card-title">Atualização Mensal</div><div class="card-desc">Planos mensais para manter sua base sempre fresca e sem registros desatualizados.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- PARA QUEM É -->
+<section class="sec" style="background:var(--bg2);border-top:1px solid var(--border)">
+  <div class="inner">
+    <div class="lbl">Para quem é</div>
+    <h2 class="ttl">Ideal para</h2>
+    <div class="grid-4">
+      <div class="card" style="text-align:center"><div class="card-ic">🏢</div><div class="card-title">Agências</div><div class="card-desc">Prospecção em escala para clientes de marketing e publicidade.</div></div>
+      <div class="card" style="text-align:center"><div class="card-ic">💻</div><div class="card-title">Freelancers</div><div class="card-desc">Desenvolvedores e designers buscando novos clientes locais.</div></div>
+      <div class="card" style="text-align:center"><div class="card-ic">🏪</div><div class="card-title">Revendedores</div><div class="card-desc">Quem vende produtos ou serviços B2B para negócios locais.</div></div>
+      <div class="card" style="text-align:center"><div class="card-ic">📞</div><div class="card-title">SDR / Pré-vendas</div><div class="card-desc">Times de prospecção que precisam de listas qualificadas.</div></div>
+    </div>
+  </div>
+</section>
+
+<!-- DEPOIMENTOS -->
+<section class="sec">
+  <div class="inner">
+    <div class="lbl">Resultados reais</div>
+    <h2 class="ttl">Clientes que prospectam todo dia</h2>
+    <div class="testi-grid">
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Comprei 500 contatos de estúdios de pilates em SP. Em 3 dias já tinha fechado 2 novos contratos. ROI imediato."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:rgba(124,58,237,.15);color:var(--pp)">C</div>
+          <div>
+            <div class="testi-name">Camila T.</div>
+            <div class="testi-role">Agência de Marketing</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Dados muito mais atualizados que os concorrentes. 94% dos números eram válidos no WhatsApp. Excelente qualidade."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:rgba(37,211,102,.1);color:#25D366">M</div>
+          <div>
+            <div class="testi-name">Marcos B.</div>
+            <div class="testi-role">SDR · Software B2B</div>
+          </div>
+        </div>
+      </div>
+      <div class="testi">
+        <div class="testi-stars">★★★★★</div>
+        <p class="testi-text">"Uso mensalmente. Cada lista nova que recebo gera em média 8 reuniões agendadas. Melhor investimento de prospecção que faço."</p>
+        <div class="testi-author">
+          <div class="testi-av" style="background:rgba(245,158,11,.12);color:#F59E0B">P</div>
+          <div>
+            <div class="testi-name">Paulo R.</div>
+            <div class="testi-role">Freelancer · Dev Web</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- CTA -->
+<section class="cta-band">
+  <h2 style="font-size:clamp(28px,4vw,48px);font-weight:700;letter-spacing:-1.5px;margin-bottom:12px">Comece a prospectar hoje</h2>
+  <p style="color:var(--muted);font-size:16px;margin-bottom:32px">Me diga seu nicho e região — amostra gratuita de 50 contatos.</p>
+  <a href="https://wa.me/5511911778502?text=Ol%C3%A1%2C+quero+uma+amostra+gr%C3%A1tis+de+leads!" target="_blank" class="btn-p" style="background:var(--pp);color:#fff;margin:0 auto">Pedir Amostra Gratuita →</a>
+</section>
+</div>
+
+<footer class="footer">
+  <div class="f-logo">prelu<span>.</span></div>
+  <div class="f-links">
+    <a href="/sites/" class="f-link">Prelu.Sites</a>
+    <a href="/local/" class="f-link">Prelu.Local</a>
+    <a href="/leads/" class="f-link">Prelu.Leads</a>
+    <a href="mailto:bruno@preluhq.com" class="f-link">bruno@preluhq.com</a>
+    <a href="https://preluhq.github.io/portfolio" class="f-link">Portfólio</a>
+  </div>
+  <div style="font-size:11px;color:var(--muted)">© 2026 Prelu</div>
+</footer>
+
+<a href="https://wa.me/5511911778502?text=Ol%C3%A1%2C+quero+uma+lista+de+leads!" target="_blank" class="wa-float" aria-label="WhatsApp">
+<svg viewBox="0 0 24 24" xmlns="http://www.w3.org/2000/svg"><path d="M17.472 14.382c-.297-.149-1.758-.867-2.03-.967-.273-.099-.471-.148-.67.15-.197.297-.767.966-.94 1.164-.173.199-.347.223-.644.075-.297-.15-1.255-.463-2.39-1.475-.883-.788-1.48-1.761-1.653-2.059-.173-.297-.018-.458.13-.606.134-.133.298-.347.446-.52.149-.174.198-.298.298-.497.099-.198.05-.371-.025-.52-.075-.149-.669-1.612-.916-2.207-.242-.579-.487-.5-.669-.51-.173-.008-.371-.01-.57-.01-.198 0-.52.074-.792.372-.272.297-1.04 1.016-1.04 2.479 0 1.462 1.065 2.875 1.213 3.074.149.198 2.096 3.2 5.077 4.487.709.306 1.262.489 1.694.625.712.227 1.36.195 1.871.118.571-.085 1.758-.719 2.006-1.413.248-.694.248-1.289.173-1.413-.074-.124-.272-.198-.57-.347m-5.421 7.403h-.004a9.87 9.87 0 01-5.031-1.378l-.361-.214-3.741.982.998-3.648-.235-.374a9.86 9.86 0 01-1.51-5.26c.001-5.45 4.436-9.884 9.888-9.884 2.64 0 5.122 1.03 6.988 2.898a9.825 9.825 0 012.893 6.994c-.003 5.45-4.437 9.884-9.885 9.884m8.413-18.297A11.815 11.815 0 0012.05 0C5.495 0 .16 5.335.157 11.892c0 2.096.547 4.142 1.588 5.945L.057 24l6.305-1.654a11.882 11.882 0 005.683 1.448h.005c6.554 0 11.89-5.335 11.893-11.893a11.821 11.821 0 00-3.48-8.413z"/></svg>
+</a>
+<script>
+const b=document.getElementById('burger'),n=document.getElementById('mobNav');
+if(b&&n){b.addEventListener('click',()=>{n.classList.toggle('open');
+const o=n.classList.contains('open');
+b.querySelectorAll('span').forEach((s,i)=>{s.style.transform=o?['rotate(45deg) translate(5px,5px)','scaleX(0)','rotate(-45deg) translate(5px,-5px)'][i]:''});});}
+</script>
+</body>
+</html>
